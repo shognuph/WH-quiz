@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Warehouse Character Quiz</title>
+  <style>
+    body {
+      background-image: url('insideWH.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #111;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 2px solid #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+    }
+
+    .options button {
+      background-color: #444;
+      color: #f5f5f5;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      width: 100%;
+      font-size: 1em;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .options button:hover {
+      transform: scale(1.05);
+    }
+
+    #score {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    #next {
+      background-color: #28a745;
+      color: #fff;
+      padding: 10px 20px;
+      margin-top: 20px;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    #next:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Warehouse Character Quiz
+  </header>
+  <div class="container">
+    <div id="score">Score: 0</div>
+    <div id="question">Question will appear here</div>
+    <div class="options">
+      <button>A</button>
+      <button>B</button>
+      <button>C</button>
+      <button>D</button>
+    </div>
+    <button id="next">Next</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is your preferred work environment?",
+        options: ["Quiet and organized", "Fast-paced and dynamic", "Collaborative and team-oriented", "Independent and flexible"],
+        answer: 0
+      },
+      {
+        question: "How do you handle unexpected challenges?",
+        options: ["Plan and strategize", "Adapt quickly", "Seek team input", "Take initiative"],
+        answer: 1
+      },
+      {
+        question: "What motivates you the most?",
+        options: ["Achieving goals", "Overcoming obstacles", "Helping others", "Learning new skills"],
+        answer: 2
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.querySelector(".options");
+    const scoreEl = document.getElementById("score");
+    const nextBtn = document.getElementById("next");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      q.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.addEventListener("click", () => {
+          if (index === q.answer) {
+            score++;
+            scoreEl.textContent = `Score: ${score}`;
+          }
+          nextBtn.disabled = false;
+        });
+        optionsEl.appendChild(button);
+      });
+      nextBtn.disabled = true;
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        questionEl.textContent = "Quiz Completed!";
+        optionsEl.innerHTML = "";
+        nextBtn.style.display = "none";
+      }
+    });
+
+    showQuestion();
+  </script>
+</body>
+</html>
